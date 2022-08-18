@@ -37,8 +37,6 @@
  '(persp-selected-face ((t (:inherit font-lock-type-face :weight bold)))))
 
 
-(use-package diminish)
-
 (use-package cargo)
 (use-package diff-hl)
 (use-package elm-mode)
@@ -98,53 +96,8 @@
 (use-package js2-mode
   :mode "\\.js\\'")
 
-(use-package magit
-  :bind
-  ("C-x g" . magit-status)
-  :custom
-  (magit-repository-directories '(("~/projects" . 1) ("~/.emacs.d" . 0))))
-
-(use-package projectile
-  :init
-  :bind
-  ("C-c p" . projectile-command-map)
-  :custom
-  (projectile-completion-system 'ivy)
-  (projectile-project-search-path '(("~/projects" . 1)))
-  :config
-  (projectile-mode))
-
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
 (use-package yaml-mode
   :mode "\\.yml\\'")
-
-(use-package undo-tree
-  :defer t
-  :diminish
-  :init (global-undo-tree-mode))
-
-(use-package which-key
-  :init (which-key-mode 1))
-
-(use-package doom-modeline
-  :custom
-  (doom-modeline-bar-width 5)
-  (doom-modeline-buffer-file-name-style (quote buffer-name) "Show only the file name in the buffer")
-  (doom-modeline-icon nil "Don't use icons")
-  (doom-modeline-mode t)
-  :custom-face
-  (doom-modeline-bar ((t (:inherit highlight :background "#bd93f9"))))
-  (doom-modeline-bar-inactive ((t (:background "#6272a4")))))
-
-(use-package perspective
-  :bind
-  (("C-x C-b" . persp-list-buffers)
-  ("C-x k" . persp-kill-buffer*)
-  ("C-x b" . persp-counsel-switch-buffer))
-  :config
-  (persp-mode))
 
 (use-package clojure-mode)
 (use-package cider)
@@ -220,16 +173,9 @@
   :hook ('c++-mode))
 
 
-;; create the autosave dir if necessary, since emacs won't.
-(make-directory "~/.emacs.d/autosaves/" t)
-
-
 ;; ------------------------------------------------------------
 ;; key overrides
 ;; ------------------------------------------------------------
-(global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-z") 'ignore)
 
 ;; undo emacs-mac default to swap command/option
 (setq mac-option-modifier 'meta)

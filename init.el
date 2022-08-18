@@ -26,8 +26,10 @@
   (package-install 'use-package))
 
 (eval-when-compile
-  (require 'use-package)
-  (require 'bind-key))
+  (require 'use-package))
+
+(require 'diminish)
+(require 'bind-key)
 
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
@@ -80,6 +82,7 @@
 ;; Use a lighter color for line highlighting
 (set-face-attribute 'hl-line nil :extend t :background "#373949")
 
+
 ;; -----------------------------------
 ;;   GENERAL SETTINGS
 ;; -----------------------------------
@@ -109,6 +112,13 @@
 (setq require-final-newline t)
 
 
+;; -----------------------------------
+;;   KEY REBINDINGS
+;; -----------------------------------
+
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-z") 'ignore)
 
 ;; -----------------------------------
 ;;   GLOBAL MODES
@@ -160,3 +170,68 @@
 ;; Use org-bullets for nicer bullet headings
 (use-package org-bullets
   :hook (org-mode . (lambda () (org-bullets-mode 1))))
+
+
+;; -----------------------------------
+;;   CORE PACKAGES
+;; -----------------------------------
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package which-key
+  :diminish
+  :init (which-key-mode 1))
+
+(use-package undo-tree
+  :diminish
+  :bind
+  ("C-x u" . undo-tree-visualize)
+  :config
+  ;; Enable, we always want this
+  (global-undo-tree-mode)
+  ;; TODO consider these, see if 'diff' is faster in WSL
+  (setq undo-tree-visualizer-timestamps nil)
+  (setq undo-tree-visualizer-diff nil))
+
+(use-package doom-modeline
+  :custom
+  (doom-modeline-bar-width 5)
+  (doom-modeline-buffer-file-name-style (quote buffer-name) "Show only the file name in the buffer")
+  ;; (doom-modeline-icon nil "Don't use icons")
+  (doom-modeline-height 1)
+  (doom-modeline-buffer-state-icon nil)
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-mode t)
+  :custom-face
+  (doom-modeline-bar ((t (:inherit highlight :background "#bd93f9"))))
+  (doom-modeline-bar-inactive ((t (:background "#6272a4")))))
+
+
+;; -----------------------------------
+;;   PROJECT PACKAGES
+;; -----------------------------------
+
+(use-package magit
+  :bind
+  (("C-x g" . magit-status)
+   ("C-c g" . magit-file-dispatch))
+  :custom
+  (magit-repository-directories '(("~/projects" . 1) ("~/.emacs.d" . 0))))
+
+(use-package projectile
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :custom
+  (projectile-completion-system 'ivy)
+  (projectile-project-search-path '(("~/projects" . 1)))
+  :config
+  (projectile-mode))
+
+;; (use-package perspective
+;;   :bind
+;;   (("C-x C-b" . persp-list-buffers)
+;;   ("C-x k" . persp-kill-buffer*)
+;;   ("C-x b" . persp-counsel-switch-buffer))
+;;   :config
+;;   (persp-mode))
